@@ -5,12 +5,13 @@ const uuid = require("uuid").v4
 
 const app = express()
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 //create a post method to get data from input and write it into a local json file
 app.post("/todos",(req, res, next)=>{
 
     const {body} = req
-    const todo1 = JSON.stringify({id:uuid(),...body})
+    const todo1 = ({id:uuid(),...body})
     
     fs.appendFile("data.json",todo1, (err)=>{
         if(err){
