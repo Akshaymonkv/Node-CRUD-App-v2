@@ -10,11 +10,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 //create a post method to get data from input and write it into a local json file
 app.post("/todos",(req, res, next)=>{
-
     const {body} = req
     const todo1 = JSON.stringify({id:uuid(),...body})
+    let newdata = fs.readFileSync("data.json","utf-8")
+    if(newdata !==''){
+        newdata += ','
+    }
+    const updata = newdata + todo1;
  
-    fs.appendFile("data.json",todo1, (err)=>{
+    fs.appendFile("data.json",updata, (err)=>{
         if(err){
             res.status(500).send("Unable to write")
         }
