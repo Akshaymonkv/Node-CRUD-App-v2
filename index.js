@@ -7,12 +7,13 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+
 //create a post method to get data from input and write it into a local json file
 app.post("/todos",(req, res, next)=>{
 
     const {body} = req
-    const todo1 = ({id:uuid(),...body})
-    
+    const todo1 = JSON.stringify({id:uuid(),...body})
+ 
     fs.appendFile("data.json",todo1, (err)=>{
         if(err){
             res.status(500).send("Unable to write")
@@ -31,12 +32,11 @@ app.get("/todos",(req, res, next)=>{
             res.status(400).send("Unable to read data")
         }
         else{
-            const ndata = JSON.parse(data)
-            res.status(200).json(ndata)
+             const newdata = JSON.parse(data)
+             res.status(200).json(newdata)
         }
     })
 
-    res.status(200).json(body)
 })
 
 app.listen("8080",()=>console.log("Up and running"))
